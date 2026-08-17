@@ -1,0 +1,86 @@
+We are now connecting the existing Restaurant Feedback MVP to our production Supabase database.
+
+IMPORTANT:
+Do NOT rebuild the UI.
+Do NOT redesign the application.
+Do NOT change the existing customer feedback flow unless necessary.
+Do NOT create a new database.
+Do NOT remove the existing functionality.
+
+The Replit Secrets already contain:
+
+SUPABASE_URL
+SUPABASE_ANON_KEY
+
+Use those existing environment variables.
+
+Your task is to inspect the existing application and identify exactly where feedback submissions are currently being persisted in Replit's built-in PostgreSQL/database.
+
+Replace that persistence layer with our Supabase project.
+
+Supabase project URL:
+https://smaszkicqioukpakjjsr.supabase.co
+
+The production tables already exist:
+
+public.restaurants
+public.feedback_categories
+public.feedback_submissions
+public.feedback_analysis
+
+The important relationships are:
+
+feedback_categories.restaurant_id → restaurants.id
+feedback_submissions.restaurant_id → restaurants.id
+feedback_submissions.category_id → feedback_categories.id
+feedback_analysis.submission_id → feedback_submissions.id
+
+The customer feedback form should ultimately create a record in:
+
+public.feedback_submissions
+
+The submission fields available are:
+
+restaurant_id
+category_id
+overall_rating
+pain_point
+positive_note
+source
+meal_period
+order_type
+
+The existing application already captures the restaurant from the QR URL. Preserve that behavior.
+
+The application should:
+
+1. Read the restaurant identifier from the QR/query URL.
+2. Load the appropriate restaurant/category information as required.
+3. Allow the customer to complete the existing feedback flow.
+4. Submit the feedback to Supabase.
+5. Show the existing success/thank-you state after a successful submission.
+6. Show a useful error state if Supabase rejects the submission.
+
+Use the existing Supabase secrets rather than hardcoding credentials.
+
+Use the Supabase JavaScript client if the current architecture supports it. If the app has a server/API endpoint for submissions, prefer keeping the submission through that endpoint and have the server use Supabase.
+
+Do NOT use the Supabase service_role/secret key.
+The application must use the low-privilege publishable/anon key and respect Row Level Security.
+
+Before making changes, inspect the existing code and explain briefly which files/components currently handle:
+- restaurant identification
+- feedback form state
+- submission
+- database persistence
+
+Then implement the smallest safe change required to switch persistence from the temporary Replit database to Supabase.
+
+After implementation, test the submission flow and report:
+- what was changed
+- what database table is being written to
+- what fields are being submitted
+- whether the Supabase request succeeds
+- any remaining issue that prevents production use
+
+Do not publish yet.
