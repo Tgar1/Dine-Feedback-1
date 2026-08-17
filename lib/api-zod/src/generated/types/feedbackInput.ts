@@ -5,25 +5,7 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
-
-/**
- * The area that could be improved most
- */
-export type FeedbackInputPainPoint = typeof FeedbackInputPainPoint[keyof typeof FeedbackInputPainPoint];
-
-
-export const FeedbackInputPainPoint = {
-  food: 'food',
-  service: 'service',
-  waiting: 'waiting',
-  cleanliness: 'cleanliness',
-  ambience: 'ambience',
-  value: 'value',
-  none: 'none',
-} as const;
+import type { FeedbackInputPainPoint } from './feedbackInputPainPoint';
 
 export interface FeedbackInput {
   /**
@@ -47,13 +29,3 @@ export interface FeedbackInput {
      */
   location?: string | null;
 }
-
-export interface FeedbackReceipt {
-  id: string;
-  message: string;
-}
-
-export interface ErrorResponse {
-  error: string;
-}
-

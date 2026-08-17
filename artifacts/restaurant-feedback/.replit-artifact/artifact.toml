@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Restaurant Feedback"
+description = "A fast, mobile-first customer feedback app for restaurants. Customers can scan a QR code, answer a few quick questions, identify pain points, and optionally leave a short comment."
+version = "1.0.0"
+id = "artifacts/restaurant-feedback"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25079
+
+[services.development]
+run = "pnpm --filter @workspace/restaurant-feedback run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/restaurant-feedback", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/restaurant-feedback/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25079"
+BASE_PATH = "/"

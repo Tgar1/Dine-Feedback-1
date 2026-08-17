@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: feedback
+    description: Customer feedback operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /feedback:
+    post:
+      operationId: createFeedback
+      tags: [feedback]
+      summary: Submit customer feedback
+      description: Stores a quick customer feedback response without requiring an account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeedbackInput"
+      responses:
+        "201":
+          description: Feedback received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedbackReceipt"
+        "400":
+          description: Invalid feedback
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +60,52 @@ components:
           type: string
       required:
         - status
+    FeedbackInput:
+      type: object
+      properties:
+        rating:
+          type: number
+          format: double
+          minimum: 1
+          maximum: 5
+          description: Overall visit rating from 1 to 5
+        painPoint:
+          type: string
+          enum:
+            - food
+            - service
+            - waiting
+            - cleanliness
+            - ambience
+            - value
+            - none
+          description: The area that could be improved most
+        comment:
+          type: ["string", "null"]
+          maxLength: 500
+          description: Optional short comment
+        location:
+          type: ["string", "null"]
+          maxLength: 80
+          description: Restaurant location from the QR code
+      required:
+        - rating
+        - painPoint
+    FeedbackReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+      required:
+        - id
+        - message
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
 
