@@ -22,13 +22,13 @@ function getLocationFromQr() {
   return value?.trim() || null;
 }
 
-function BrandMark() {
+function BrandMark({ inverse = false }: { inverse?: boolean }) {
   return (
     <div className="flex items-center gap-2.5" data-testid="brand-mark">
-      <span className="grid size-9 place-items-center rounded-full bg-[#ee704c] text-[#fff8eb] shadow-[0_5px_14px_rgba(191,70,40,.2)]">
-        <span className="h-4 w-4 rounded-full border-[1.5px] border-[#fff8eb] border-dashed" />
+      <span className="grid size-9 place-items-center rounded-full bg-[#CCFF00] text-[#1B4D3E] shadow-[0_5px_14px_rgba(27,77,62,.12)]">
+        <span className="h-4 w-4 rounded-full border-[1.5px] border-[#1B4D3E] border-dashed" />
       </span>
-      <span className="font-serif text-[1.15rem] font-semibold tracking-[-0.03em] text-[#362922]">Morrow &amp; Salt</span>
+      <span className={`font-serif text-[1.15rem] font-semibold tracking-[-0.03em] ${inverse ? 'text-[#FFFFFF]' : 'text-[#1B4D3E]'}`}>Rodina</span>
     </div>
   );
 }
@@ -40,16 +40,16 @@ function Progress({ step }: { step: Step }) {
         <div key={item} className="flex items-center gap-2">
           <span
             className={`grid size-6 place-items-center rounded-full text-[11px] font-bold transition-colors ${
-              item <= step ? 'bg-[#ee704c] text-[#fff8eb]' : 'bg-[#eadfce] text-[#8a7668]'
+              item <= step ? 'bg-[#1B4D3E] text-[#FFFFFF]' : 'bg-[#e7eee9] text-[#5f776b]'
             }`}
             aria-current={item === step ? 'step' : undefined}
           >
             {item < step ? <Check size={13} strokeWidth={3} /> : item}
           </span>
-          {item < 3 && <span className={`h-px w-8 transition-colors sm:w-12 ${item < step ? 'bg-[#ee704c]' : 'bg-[#eadfce]'}`} />}
+          {item < 3 && <span className={`h-px w-8 transition-colors sm:w-12 ${item < step ? 'bg-[#1B4D3E]' : 'bg-[#d8e3dc]'}`} />}
         </div>
       ))}
-      <span className="ml-1 font-mono text-[10px] uppercase tracking-[.15em] text-[#927e70]">under a minute</span>
+      <span className="ml-1 font-mono text-[10px] uppercase tracking-[.15em] text-[#5f776b]">under a minute</span>
     </div>
   );
 }
@@ -63,11 +63,11 @@ function RatingStep({
 }) {
   return (
     <section className="feedback-rise" aria-labelledby="rating-heading" data-testid="section-rating">
-      <p className="mb-3 font-mono text-[10px] uppercase tracking-[.18em] text-[#b45139]">01 / your visit</p>
-      <h1 id="rating-heading" className="max-w-[14ch] font-serif text-[clamp(2.45rem,11vw,4.4rem)] leading-[.98] tracking-[-.055em] text-[#362922]">
+      <p className="mb-3 font-mono text-[10px] uppercase tracking-[.18em] text-[#1B4D3E]">01 / your visit</p>
+      <h1 id="rating-heading" className="max-w-[14ch] font-serif text-[clamp(2.45rem,11vw,4.4rem)] leading-[.98] tracking-[-.055em] text-[#1B4D3E]">
         How did it feel to be here?
       </h1>
-      <p className="mt-5 max-w-md text-[15px] leading-6 text-[#79685e]">
+      <p className="mt-5 max-w-md text-[15px] leading-6 text-[#5f776b]">
         A quick gut check helps us make the next visit even more yours.
       </p>
       <div className="mt-8 flex items-center gap-2.5" role="radiogroup" aria-label="Overall visit rating">
@@ -83,8 +83,8 @@ function RatingStep({
               onClick={() => onChoose(item)}
               className={`choice-ring grid size-[52px] place-items-center rounded-[17px] border ${
                 active
-                  ? 'border-[#ee704c] bg-[#ee704c] text-[#fff8eb] shadow-[0_8px_20px_rgba(191,70,40,.2)]'
-                  : 'border-[#dacbbb] bg-[#fffaf1] text-[#c8b6a6] hover:border-[#ee704c] hover:text-[#ee704c]'
+                  ? 'border-[#CCFF00] bg-[#CCFF00] text-[#1B4D3E] shadow-[0_8px_18px_rgba(27,77,62,.12)]'
+                  : 'border-[#d8e3dc] bg-[#FFFFFF] text-[#9aafa3] hover:border-[#1B4D3E] hover:text-[#1B4D3E]'
               }`}
               data-testid={`button-rating-${item}`}
             >
@@ -93,7 +93,7 @@ function RatingStep({
           );
         })}
       </div>
-      <p className="mt-3 min-h-5 text-[12px] text-[#927e70]" aria-live="polite" data-testid="text-rating-hint">
+      <p className="mt-3 min-h-5 text-[12px] text-[#5f776b]" aria-live="polite" data-testid="text-rating-hint">
         {rating === null ? 'Tap a feeling, not a number.' : ['', 'We missed the mark.', 'A little uneven.', 'A good visit.', 'Really lovely.', 'We’re blushing.'][rating]}
       </p>
     </section>
@@ -150,35 +150,35 @@ function FeedbackForm() {
   };
 
   return (
-    <main className="min-h-[100dvh] bg-[#f7f0e5] text-[#362922] warm-grain">
+    <main className="min-h-[100dvh] bg-[#FFFFFF] text-[#1B4D3E] warm-grain">
       <div className="mx-auto grid min-h-[100dvh] max-w-[1360px] lg:grid-cols-[minmax(330px,0.78fr)_minmax(520px,1.22fr)]">
-        <aside className="relative hidden overflow-hidden bg-[#2f2521] px-10 py-10 text-[#fff8eb] lg:flex lg:flex-col lg:justify-between xl:px-16">
-          <div className="absolute -right-28 top-20 size-72 rounded-full border border-[#796459]/40" />
-          <div className="absolute -right-12 top-36 size-40 rounded-full border border-[#796459]/30" />
+        <aside className="relative hidden overflow-hidden bg-[#143B2E] px-10 py-10 text-[#FFFFFF] lg:flex lg:flex-col lg:justify-between xl:px-16">
+          <div className="absolute -right-28 top-20 size-72 rounded-full border border-[#8fb4a3]/25" />
+          <div className="absolute -right-12 top-36 size-40 rounded-full border border-[#8fb4a3]/20" />
           <div className="relative z-10">
-            <BrandMark />
+            <BrandMark inverse />
             <div className="mt-32 max-w-[300px]">
-              <p className="font-mono text-[10px] uppercase tracking-[.2em] text-[#eaa58d]">The honest minute</p>
-              <h2 className="mt-5 font-serif text-[clamp(3rem,5vw,5rem)] leading-[.94] tracking-[-.06em] text-[#fff8eb]">
-                Small notes.<br /><span className="text-[#eaa58d]">Better nights.</span>
+              <p className="font-mono text-[10px] uppercase tracking-[.2em] text-[#CCFF00]">The honest minute</p>
+              <h2 className="mt-5 font-serif text-[clamp(3rem,5vw,5rem)] leading-[.94] tracking-[-.06em] text-[#FFFFFF]">
+                Small notes.<br /><span className="text-[#CCFF00]">Better nights.</span>
               </h2>
               <p className="mt-7 max-w-[250px] text-sm leading-6 text-[#cbbab0]">
                 We read every note at the table. Thank you for leaving one while the evening is still fresh.
               </p>
             </div>
           </div>
-          <div className="relative z-10 flex items-end justify-between border-t border-[#796459]/45 pt-5 text-[11px] text-[#bca99e]">
+          <div className="relative z-10 flex items-end justify-between border-t border-[#8fb4a3]/30 pt-5 text-[11px] text-[#c8d7cf]">
             <span>01 — 03</span>
             <span className="flex items-center gap-2"><ShieldCheck size={14} /> no account needed</span>
           </div>
-          <div className="feedback-drift absolute bottom-28 right-24 size-20 rounded-[23px] border border-[#eaa58d]/35 bg-[#eaa58d]/10" />
+          <div className="absolute bottom-28 right-24 size-20 rounded-[23px] border border-[#CCFF00]/25 bg-[#CCFF00]/5" />
         </aside>
 
         <div className="relative flex flex-col px-5 pb-8 pt-6 sm:px-10 sm:pt-9 lg:px-[clamp(3rem,8vw,9rem)] lg:py-12">
           <header className="mb-11 flex items-center justify-between lg:mb-20" data-testid="header-feedback">
             <div className="lg:hidden"><BrandMark /></div>
             <div className="hidden lg:block" />
-            <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.15em] text-[#927e70]" data-testid="text-privacy">
+            <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.15em] text-[#5f776b]" data-testid="text-privacy">
               <ShieldCheck size={14} strokeWidth={1.8} /> private by design
             </span>
           </header>
@@ -189,11 +189,11 @@ function FeedbackForm() {
               <RatingStep rating={rating} onChoose={chooseRating} />
 
               <section className={`mt-12 transition-opacity duration-300 ${rating === null ? 'pointer-events-none opacity-35' : 'opacity-100'}`} aria-labelledby="improve-heading" data-testid="section-pain-point">
-                <p className="mb-3 font-mono text-[10px] uppercase tracking-[.18em] text-[#b45139]">02 / one small thing</p>
-                <h2 id="improve-heading" className="font-serif text-[clamp(1.8rem,6vw,2.8rem)] leading-[1.02] tracking-[-.045em] text-[#362922]">
+                <p className="mb-3 font-mono text-[10px] uppercase tracking-[.18em] text-[#1B4D3E]">02 / one small thing</p>
+                <h2 id="improve-heading" className="font-serif text-[clamp(1.8rem,6vw,2.8rem)] leading-[1.02] tracking-[-.045em] text-[#1B4D3E]">
                   What could have felt better?
                 </h2>
-                <p className="mt-3 text-[14px] leading-6 text-[#79685e]">Choose the closest thing. “Nothing” is a perfectly good answer.</p>
+                <p className="mt-3 text-[14px] leading-6 text-[#5f776b]">Choose the closest thing. “Nothing” is a perfectly good answer.</p>
                 <div className="mt-6 flex flex-wrap gap-2.5">
                   {painPoints.map((item) => {
                     const active = painPoint === item.value;
@@ -205,8 +205,8 @@ function FeedbackForm() {
                         onClick={() => choosePainPoint(item.value)}
                         className={`choice-ring min-h-11 rounded-full border px-4 py-2.5 text-[13px] font-medium ${
                           active
-                            ? 'border-[#362922] bg-[#362922] text-[#fff8eb]'
-                            : 'border-[#dacbbb] bg-[#fffaf1] text-[#66554b] hover:border-[#927e70]'
+                            ? 'border-[#1B4D3E] bg-[#1B4D3E] text-[#FFFFFF]'
+                            : 'border-[#d8e3dc] bg-[#FFFFFF] text-[#466457] hover:border-[#1B4D3E]'
                         }`}
                         data-testid={`button-pain-point-${item.value}`}
                       >
@@ -220,10 +220,10 @@ function FeedbackForm() {
               <section className={`mt-12 transition-opacity duration-300 ${painPoint === null ? 'pointer-events-none opacity-35' : 'opacity-100'}`} aria-labelledby="comment-heading" data-testid="section-comment">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="mb-3 font-mono text-[10px] uppercase tracking-[.18em] text-[#b45139]">03 / in your words</p>
-                    <h2 id="comment-heading" className="font-serif text-[clamp(1.8rem,6vw,2.8rem)] leading-[1.02] tracking-[-.045em] text-[#362922]">Anything else?</h2>
+                    <p className="mb-3 font-mono text-[10px] uppercase tracking-[.18em] text-[#1B4D3E]">03 / in your words</p>
+                    <h2 id="comment-heading" className="font-serif text-[clamp(1.8rem,6vw,2.8rem)] leading-[1.02] tracking-[-.045em] text-[#1B4D3E]">Anything else?</h2>
                   </div>
-                  <MessageCircle className="mt-2 shrink-0 text-[#d7a28e]" size={26} strokeWidth={1.5} />
+                  <MessageCircle className="mt-2 shrink-0 text-[#8fb4a3]" size={26} strokeWidth={1.5} />
                 </div>
                 <div className="relative mt-5">
                   <textarea
@@ -232,16 +232,16 @@ function FeedbackForm() {
                     onChange={(event) => setComment(event.target.value)}
                     placeholder="A dish you loved, a moment we should know about…"
                     aria-label="Optional comment"
-                    className="min-h-[118px] w-full resize-none rounded-[18px] border border-[#dacbbb] bg-[#fffaf1] px-4 py-4 text-[15px] leading-6 text-[#362922] outline-none transition-colors placeholder:text-[#ac9a8c] focus:border-[#ee704c] focus:ring-4 focus:ring-[#ee704c]/10"
+                    className="min-h-[118px] w-full resize-none rounded-[18px] border border-[#d8e3dc] bg-[#FFFFFF] px-4 py-4 text-[15px] leading-6 text-[#1B4D3E] outline-none transition-colors placeholder:text-[#92a79b] focus:border-[#1B4D3E] focus:ring-4 focus:ring-[#1B4D3E]/10"
                     data-testid="input-comment"
                   />
-                  <span className="absolute bottom-3 right-4 font-mono text-[10px] text-[#a38e80]" data-testid="text-comment-count">{comment.length}/500</span>
+                  <span className="absolute bottom-3 right-4 font-mono text-[10px] text-[#799488]" data-testid="text-comment-count">{comment.length}/500</span>
                 </div>
               </section>
 
               <div className="mt-8">
                 {errorMessage && (
-                  <div className="mb-4 flex items-start gap-3 rounded-[15px] border border-[#e0a296] bg-[#fff3ed] px-4 py-3 text-[13px] leading-5 text-[#9a3b2b]" role="alert" data-testid="status-submit-error">
+                    <div className="mb-4 flex items-start gap-3 rounded-[15px] border border-[#d8aaa0] bg-[#fff5f2] px-4 py-3 text-[13px] leading-5 text-[#9a3b2b]" role="alert" data-testid="status-submit-error">
                     <CircleAlert className="mt-0.5 shrink-0" size={17} />
                     <span>{errorMessage}</span>
                   </div>
@@ -249,12 +249,12 @@ function FeedbackForm() {
                 <button
                   type="submit"
                   disabled={!canSubmit || createFeedback.isPending}
-                  className="group flex min-h-[56px] w-full items-center justify-center gap-3 rounded-[17px] bg-[#ee704c] px-6 text-[15px] font-semibold text-[#fff8eb] shadow-[0_10px_22px_rgba(191,70,40,.18)] transition-[transform,background-color,opacity] hover:bg-[#d95f3d] active:scale-[.985] disabled:cursor-not-allowed disabled:bg-[#d8c7ba] disabled:text-[#947f71] disabled:shadow-none"
+                  className="group flex min-h-[56px] w-full items-center justify-center gap-3 rounded-[17px] bg-[#CCFF00] px-6 text-[15px] font-semibold text-[#143B2E] shadow-[0_10px_22px_rgba(27,77,62,.12)] transition-[transform,background-color,opacity] hover:bg-[#D4FF1A] active:scale-[.985] disabled:cursor-not-allowed disabled:bg-[#dce5df] disabled:text-[#799488] disabled:shadow-none"
                   data-testid="button-submit-feedback"
                 >
                   {createFeedback.isPending ? (
                     <>
-                      <span className="size-4 animate-pulse rounded-full border-2 border-[#fff8eb]/40 border-t-[#fff8eb]" />
+                      <span className="size-4 animate-pulse rounded-full border-2 border-[#143B2E]/30 border-t-[#143B2E]" />
                       Sending quietly…
                     </>
                   ) : (
@@ -263,7 +263,7 @@ function FeedbackForm() {
                     </>
                   )}
                 </button>
-                <p className="mt-4 flex items-center justify-center gap-2 text-center font-mono text-[10px] uppercase tracking-[.12em] text-[#927e70]" data-testid="text-submit-note">
+                <p className="mt-4 flex items-center justify-center gap-2 text-center font-mono text-[10px] uppercase tracking-[.12em] text-[#5f776b]" data-testid="text-submit-note">
                   <Clock3 size={13} /> takes about 30 seconds · no sign-in
                 </p>
               </div>
@@ -271,7 +271,7 @@ function FeedbackForm() {
           </div>
 
           <footer className="mt-auto hidden pt-14 text-center lg:block">
-            <p className="text-[12px] text-[#a18f83]">A thoughtful pause before you head home.</p>
+            <p className="text-[12px] text-[#799488]">A thoughtful pause before you head home.</p>
           </footer>
         </div>
       </div>

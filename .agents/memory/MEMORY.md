@@ -1,1 +1,2 @@
 - [OpenAPI integer compatibility](openapi-integer-compatibility.md) — use numeric schemas for integer-like values when generated Zod targets this workspace's Zod 3 runtime.
+- [Rodina visual identity](rodina-brand.md) — keep the feedback experience white, forest green, and sparingly neon lime.

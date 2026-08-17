@@ -1,0 +1,79 @@
+We need to refine the current MVP visually for the actual restaurant: Rodina.
+
+Do NOT rebuild the UX or change the existing feedback flow. Keep the current mobile-first interaction and structure intact. This is a visual/brand refinement pass.
+
+Rodina's official brand colours are:
+
+Primary Dark Forest Green: #1B4D3E
+Alternative darker green: #143B2E
+Accent Neon Lime: #CCFF00
+Alternative lime: #D4FF1A
+White: #FFFFFF
+
+Apply the following visual hierarchy:
+
+1. Background — approximately 60%
+
+Use pure white (#FFFFFF) or a very subtle warm/off-white background.
+
+The customer feedback experience should feel clean, calm, premium and effortless.
+
+2. Structural elements — approximately 30%
+
+Use Rodina's Dark Forest Green (#1B4D3E or #143B2E) for:
+
+primary text
+headings where appropriate
+progress indicators
+subtle borders
+icons
+structural UI elements
+any small brand/navigation elements
+
+Remove the current coral/orange visual treatment and replace it with Rodina's green system.
+
+3. CTA / interaction emphasis — approximately 10%
+
+Use the Neon Lime (#CCFF00 or #D4FF1A) sparingly.
+
+Reserve it primarily for important interactive actions such as:
+
+Continue
+Submit Feedback
+Give Rating
+Finish
+
+Use dark forest green or near-black text on the lime buttons for readability.
+
+Do NOT use neon lime everywhere. It should function as a high-visibility action colour.
+
+Brand personality
+
+Rodina should feel:
+
+premium
+warm
+modern
+confident
+understated
+hospitality-focused
+
+Avoid making it feel like a generic SaaS dashboard.
+
+Avoid excessive gradients, glassmorphism, excessive shadows, unnecessary animations, or overly technical UI.
+
+The customer should feel like they are simply giving Rodina a quick "gut check", not filling out a corporate survey.
+
+Important UX constraint
+
+Do NOT increase complexity.
+
+Keep the central product principle:
+
+Ridiculously easy for the customer.
+
+The visual design should support that principle rather than compete with it.
+
+Make the result feel like a polished hospitality experience rather than a software product.
+
+After applying the visual refinement, preserve the existing functionality and ensure the entire flow remains responsive on mobile and desktop.
