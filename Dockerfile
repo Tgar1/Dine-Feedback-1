@@ -1,18 +1,16 @@
 FROM node:26-alpine
 
-WORKDIR /app
+WORKDIR /app/artifacts/api-server
 
-COPY pnpm-lock.yaml ./
-COPY package.json ./
-COPY pnpm-workspace.yaml ./
-
-COPY artifacts/api-server ./artifacts/api-server/
+COPY artifacts/api-server/package.json ./
+COPY pnpm-lock.yaml ../../
 
 RUN npm install -g pnpm
 RUN pnpm install --no-frozen-lockfile --prefer-offline
 
-RUN cd artifacts/api-server && pnpm run build
+COPY artifacts/api-server/. .
 
-WORKDIR /app/artifacts/api-server
+RUN pnpm run build
+
 EXPOSE 5000
-CMD ["pnpm", "run", "start"]
+CMD ["pnpm", "run", "start"]s
