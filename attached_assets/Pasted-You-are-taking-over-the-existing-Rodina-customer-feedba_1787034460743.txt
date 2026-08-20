@@ -1,0 +1,641 @@
+You are taking over the existing Rodina customer feedback MVP.
+
+IMPORTANT: Do NOT rewrite the application from scratch. Do NOT make unrelated architectural changes. First inspect the existing codebase and understand what is already working. Then fix the root causes and complete the remaining work in ONE comprehensive pass.
+
+The objective is to leave the Rodina MVP fully functional, tested, coherent, and as close to production-ready as possible.
+
+==================================================
+CURRENT PROJECT STATE
+
+The application already has a working customer feedback flow:
+
+Customer
+→ QR code
+→ Feedback form
+→ POST /api/feedback
+→ Supabase feedback_submissions
+→ GET /api/dashboard?location=rodina
+→ React dashboard
+
+This has already been tested successfully.
+
+Current live test feedback:
+
+1. 5/5
+    Pain point: food
+    Comment: “The food was excellent”
+2. 4/5
+    Pain point: service
+    Comment: “testing rodina”
+
+The dashboard API currently correctly returns:
+
+* restaurant identifier: rodina
+* totalFeedback: 2
+* averageRating: 4.5
+* ratingDistribution:
+    1: 0
+    2: 0
+    3: 0
+    4: 1
+    5: 1
+* painPointDistribution:
+    food: 1
+    service: 1
+    waiting: 0
+    cleanliness: 0
+    ambience: 0
+    value: 0
+
+The dashboard UI is already built and renders:
+
+* Total Feedback
+* Average Rating
+* Positive Feedback
+* Needs Attention
+* Rating Overview
+* What Customers Mention
+* Recent Feedback
+* Customer Sentiment
+* AI Insights
+* Top complaints
+* Top positive mentions
+* Recommended actions
+
+==================================================
+CURRENT CRITICAL BUG
+
+The dashboard currently receives the feedback records correctly, but AI analysis is missing.
+
+Browser DevTools showed:
+
+AI ANALYSIS JSON: undefined
+
+while FEEDBACK JSON correctly contains objects such as:
+
+{
+“id”: “e438044e-cc18-4434-af98-d7e9b0679f99”,
+“overall_rating”: 5,
+“pain_point”: “food”,
+“positive_note”: “The food was excellent”,
+“source”: “qr”,
+“created_at”: “2026-08-17T17:01:14.834251+00:00”,
+“meal_period”: null,
+“order_type”: null
+}
+
+The API response currently contains:
+
+restaurant
+summary
+ratingDistribution
+painPointDistribution
+recentFeedback
+
+but recentFeedback does NOT currently contain ai_analysis.
+
+The React frontend already expects:
+
+ai_analysis: {
+submission_id,
+sentiment,
+severity,
+issue_summary,
+recommended_action,
+confidence,
+model
+}
+
+The backend currently attempts to load analysis using:
+
+feedback_analysis
+
+and match it with:
+
+feedback_submissions.id
+↕
+feedback_analysis.submission_id
+
+The relevant backend logic is approximately:
+
+const submissionIds = feedback.map((item) => item.id);
+
+const { data: analysisData, error: analysisError } = await supabase
+.from(“feedback_analysis”)
+.select(
+“submission_id, sentiment, severity, issue_summary, recommended_action, confidence, model”,
+)
+.in(“submission_id”, submissionIds);
+
+Then:
+
+const analyses = (analysisData ?? []) as DashboardAnalysis[];
+
+const analysisBySubmissionId = new Map(
+analyses.map((item) => [item.submission_id, item]),
+);
+
+And finally:
+
+recentFeedback: feedback.slice(0, 20).map((item) => ({
+…item,
+ai_analysis: analysisBySubmissionId.get(item.id) ?? null,
+}))
+
+THIS IS THE FIRST THING YOU MUST AUDIT AND FIX.
+
+Do not assume the existing implementation is correct.
+
+Trace the entire pipeline:
+
+feedback_submissions
+→ AI analysis generation
+→ feedback_analysis
+→ dashboard API
+→ React dashboard
+
+Determine exactly where the chain breaks.
+
+==================================================
+SUPABASE / DATABASE REQUIREMENTS
+
+Inspect the actual database schema before making assumptions.
+
+Confirm:
+
+1. feedback_submissions exists.
+2. feedback_analysis exists.
+3. feedback_analysis.submission_id references the correct feedback submission identifier.
+4. The columns actually exist:
+    * submission_id
+    * sentiment
+    * severity
+    * issue_summary
+    * recommended_action
+    * confidence
+    * model
+5. Existing rows in feedback_analysis are correctly associated with the two existing test submissions.
+
+If feedback_analysis rows are missing, determine why.
+
+If the AI analysis generation mechanism is missing or incomplete, implement it.
+
+If the rows exist but the dashboard query is wrong, fix the query.
+
+If the rows exist and the query is correct but the mapping is wrong, fix the mapping.
+
+If the database schema is wrong, make the smallest safe migration necessary.
+
+Do NOT create duplicate tables.
+
+Do NOT create duplicate analysis records.
+
+Do NOT destroy existing feedback.
+
+Preserve the two existing test submissions.
+
+==================================================
+AI ANALYSIS REQUIREMENTS
+
+Every submitted feedback should eventually receive structured AI analysis containing:
+
+* sentiment:
+    positive | neutral | negative
+* severity:
+    numeric severity level
+* issue_summary:
+    concise description of the main issue or positive theme
+* recommended_action:
+    concrete business action
+* confidence:
+    confidence score
+* model:
+    model identifier
+
+The analysis must be linked to the original feedback submission using submission_id.
+
+Implement the cleanest architecture available in the existing project.
+
+Prefer asynchronous analysis after feedback submission if the current architecture supports it.
+
+IMPORTANT:
+Customer feedback submission itself must remain reliable even if AI analysis fails.
+
+A failure in AI analysis must NOT cause:
+
+POST /api/feedback
+
+to fail after the feedback has already been successfully stored.
+
+The system should be able to recover/retry analysis if appropriate.
+
+==================================================
+AUTOMATIC ANALYSIS OF NEW FEEDBACK
+
+Do not only analyze the two existing test records.
+
+Make the system automatically analyze future submissions.
+
+Test this by creating new feedback after the implementation is complete.
+
+Verify:
+
+New feedback
+→ stored
+→ analyzed
+→ feedback_analysis row created
+→ dashboard API returns ai_analysis
+→ dashboard displays the result.
+
+==================================================
+DASHBOARD REQUIREMENTS
+
+Once AI analysis works, make the dashboard fully functional.
+
+Positive Feedback:
+
+Display the actual number of analyzed positive submissions.
+
+Needs Attention:
+
+Count feedback that is:
+
+* negative sentiment
+    OR
+* severity >= 3
+
+Customer Sentiment:
+
+Display:
+
+* positive count
+* neutral count
+* negative count
+* dominant sentiment
+
+Top Complaints:
+
+Show up to 5 meaningful complaint themes.
+
+Do NOT simply dump five individual comments.
+
+Aggregate recurring issues where possible.
+
+For example, if several submissions complain about slow service, the dashboard should identify:
+
+“Slow service / waiting time”
+
+rather than displaying five nearly identical sentences.
+
+Top Positive Mentions:
+
+Show up to 5 recurring positive themes.
+
+Examples:
+
+* Food quality
+* Friendly staff
+* Atmosphere
+* Portion size
+* Clean environment
+
+Again, aggregate recurring themes where possible.
+
+Recommended Actions:
+
+Show up to 5 concrete business actions.
+
+Recommendations should be derived from the actual negative/attention-generating feedback.
+
+For example:
+
+“Review peak-hour staffing to reduce service delays.”
+
+is better than:
+
+“Improve service.”
+
+==================================================
+DASHBOARD QUALITY
+
+Keep the existing Rodina visual identity:
+
+Dark green:
+#143B2E
+
+Lime:
+#D4FF1A
+
+White background.
+
+The dashboard should feel like a real customer-intelligence product rather than a raw developer dashboard.
+
+Improve where necessary:
+
+* spacing
+* hierarchy
+* readability
+* empty states
+* loading states
+* mobile responsiveness
+* error states
+* cards
+* sentiment presentation
+* insight presentation
+
+Do not over-design it.
+
+Keep it clean, premium, restrained and business-oriented.
+
+==================================================
+RECENT FEEDBACK TABLE
+
+The table currently shows:
+
+Rating
+Pain Point
+Comment
+Source
+
+Keep this functionality.
+
+However, make sure the displayed comment field is actually the customer’s comment/positive_note.
+
+Where appropriate, add useful AI information without making the table cluttered.
+
+Do not break the existing table.
+
+==================================================
+RESTAURANT LOOKUP CLEANUP
+
+The existing findRestaurantId() function currently probes:
+
+id
+slug
+code
+location
+name
+
+This produces unnecessary errors because:
+
+* restaurants.id is UUID and should not be compared against “rodina”
+* restaurants.slug does not exist
+* restaurants.code does not exist
+
+Inspect the actual restaurants schema.
+
+Then simplify findRestaurantId() to use the real identifier column(s).
+
+Do NOT leave unnecessary error logs in normal operation.
+
+The current system successfully finds Rodina, so preserve that functionality while cleaning up the lookup.
+
+==================================================
+MULTI-LOCATION SUPPORT
+
+Do not hard-code the entire system to Rodina.
+
+Rodina is the current test restaurant.
+
+The architecture should support:
+
+/api/dashboard?location=rodina
+
+and future restaurant identifiers.
+
+Feedback submissions must remain associated with the correct restaurant.
+
+QR links must continue to pass the correct location identifier.
+
+Do not remove the location parameter.
+
+==================================================
+SECURITY
+
+Audit dashboard access.
+
+If the current dashboard is publicly accessible and exposes sensitive business information, determine the safest minimal authentication/authorization approach appropriate to the existing project.
+
+Do not introduce a complicated authentication system unnecessarily.
+
+At minimum:
+
+* customer feedback submission must remain easy through QR
+* dashboard/business data should not be accidentally exposed if the application is intended for real clients
+* restaurant A must not be able to access restaurant B’s dashboard data.
+
+Also verify Supabase access patterns and avoid exposing privileged keys in frontend code.
+
+==================================================
+ERROR HANDLING
+
+Verify all of these:
+
+1. Invalid restaurant identifier.
+2. Missing location.
+3. Database unavailable.
+4. AI analysis unavailable.
+5. Empty feedback dataset.
+6. No AI analysis yet.
+7. Partial AI analysis.
+8. Malformed AI response.
+9. Duplicate/failed analysis attempts.
+
+The application should degrade gracefully.
+
+==================================================
+TEST DATA / END-TO-END TEST
+
+After implementation, create or use a controlled set of test feedback representing:
+
+1. Very positive food feedback.
+2. Positive service feedback.
+3. Neutral feedback.
+4. Negative service/waiting feedback.
+5. Negative food feedback.
+6. Negative value/price feedback.
+7. Ambience feedback.
+
+Verify the resulting analysis.
+
+Then verify the dashboard reflects the data correctly.
+
+Do NOT permanently pollute the production dataset with unnecessary test data if there is an existing development/test mechanism.
+
+If you must create test rows, clearly identify them and clean them up afterward where safe.
+
+==================================================
+API VERIFICATION
+
+The following endpoint must work:
+
+GET /api/dashboard?location=rodina
+
+The response should contain:
+
+{
+“restaurant”: {…},
+“summary”: {…},
+“ratingDistribution”: {…},
+“painPointDistribution”: {…},
+“recentFeedback”: [
+{
+“id”: “…”,
+“overall_rating”: 5,
+“pain_point”: “food”,
+“positive_note”: “…”,
+“source”: “qr”,
+“created_at”: “…”,
+“ai_analysis”: {
+“submission_id”: “…”,
+“sentiment”: “…”,
+“severity”: …,
+“issue_summary”: “…”,
+“recommended_action”: “…”,
+“confidence”: …,
+“model”: “…”
+}
+}
+]
+}
+
+The exact values will depend on the data.
+
+The important requirement is that ai_analysis is actually present when analysis exists.
+
+==================================================
+CODE QUALITY
+
+Before finishing:
+
+* remove temporary debug console.logs
+* remove dead code
+* remove unused variables
+* remove unnecessary imports
+* fix TypeScript diagnostics
+* fix JSX diagnostics
+* ensure all braces/tags are balanced
+* ensure the API builds
+* ensure the frontend builds
+* ensure the server starts
+* ensure there are no port conflicts caused by duplicate development processes
+* ensure no obvious lint/type errors remain
+* keep types accurate
+* avoid any / any where practical
+* do not leave experimental code in production paths
+
+==================================================
+FINAL PRODUCT REQUIREMENTS
+
+By the end of this task, the Rodina MVP should support this complete flow:
+
+QR code
+↓
+Customer opens feedback form
+↓
+Restaurant/location is identified
+↓
+Customer submits rating + pain point + optional comment
+↓
+Feedback stored in Supabase
+↓
+AI analyzes feedback
+↓
+Structured analysis stored in feedback_analysis
+↓
+Dashboard API retrieves feedback + analysis
+↓
+Dashboard displays:
+
+* total feedback
+* average rating
+* positive feedback
+* needs attention
+* rating distribution
+* pain-point distribution
+* recent feedback
+* overall sentiment
+* top complaints
+* top positive mentions
+* recommended actions
+    ↓
+    Restaurant owner can understand what customers are saying
+    ↓
+    Restaurant owner gets actionable recommendations
+
+==================================================
+IMPORTANT EXECUTION RULE
+
+Do NOT stop after fixing the first error.
+
+Do NOT return after saying “the bug is fixed.”
+
+Continue through the entire checklist above in this same task.
+
+First inspect.
+Then diagnose.
+Then fix the root cause.
+Then implement missing pieces.
+Then improve the dashboard.
+Then clean the code.
+Then test the entire system.
+
+If one approach fails, inspect the actual schema/code and choose the correct approach rather than asking me to manually guess which file or line to edit.
+
+Do not repeatedly ask me where something is if you can inspect the repository yourself.
+
+Do not make me manually copy/paste code between files unless absolutely necessary.
+
+Use the existing architecture and dependencies where possible.
+
+Do not rewrite working components unnecessarily.
+
+==================================================
+DEFINITION OF DONE
+
+Do not consider this task complete until ALL of the following are true:
+
+[ ] Customer feedback submission works.
+[ ] Feedback is stored in Supabase.
+[ ] Existing feedback remains intact.
+[ ] AI analysis can be generated.
+[ ] AI analysis is stored in feedback_analysis.
+[ ] Existing feedback can be analyzed.
+[ ] New feedback is automatically analyzed.
+[ ] Dashboard API returns ai_analysis.
+[ ] Positive Feedback count works.
+[ ] Needs Attention count works.
+[ ] Sentiment counts work.
+[ ] Dominant sentiment works.
+[ ] Top complaints work.
+[ ] Top positive mentions work.
+[ ] Recommended actions work.
+[ ] Repeated themes are sensibly aggregated.
+[ ] Restaurant lookup uses the real schema.
+[ ] Invalid lookup attempts do not spam server logs.
+[ ] Multiple restaurant identifiers remain supported.
+[ ] Dashboard access is appropriately protected.
+[ ] Customer QR flow remains frictionless.
+[ ] Empty states work.
+[ ] Error states work.
+[ ] Mobile layout works.
+[ ] TypeScript diagnostics are clean.
+[ ] JSX diagnostics are clean.
+[ ] API builds successfully.
+[ ] Frontend builds successfully.
+[ ] Server starts successfully.
+[ ] End-to-end test passes.
+[ ] No temporary debugging code remains.
+[ ] No unrelated functionality has been broken.
+
+At the very end, provide a concise completion report containing:
+
+1. What you changed.
+2. The root cause of the AI-analysis problem.
+3. What files were changed.
+4. What database/schema changes were made.
+5. What tests were run.
+6. The final end-to-end result.
+7. Any genuinely remaining blockers.
+
+Do not claim something works unless you actually tested it.

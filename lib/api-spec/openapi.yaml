@@ -70,27 +70,66 @@ components:
           maximum: 5
           description: Overall visit rating from 1 to 5
         painPoint:
-          type: string
+          type: ["string", "null"]
           enum:
             - food
             - service
             - waiting
             - cleanliness
+            - atmosphere
             - ambience
             - value
-            - none
-          description: The area that could be improved most
-        comment:
-          type: ["string", "null"]
-          maxLength: 500
-          description: Optional short comment
+            - delivery
+            - other
+            - none # for good/excellent ratings
+          description: The area that could be improved most, or 'none' for positive feedback.
         location:
           type: ["string", "null"]
           maxLength: 80
           description: Restaurant location from the QR code
+        # Good experience flow
+        enjoyedMost:
+          type: ["string", "null"]
+          description: For good ratings, what the user enjoyed most.
+        improvementSuggestion:
+          type: ["string", "null"]
+          description: For good ratings, what would make the next visit even better.
+        # Cascading issue fields
+        primaryIssue:
+          type: ["string", "null"]
+          description: The primary issue selected within a pain point category (e.g., 'Taste' for 'Food').
+        secondaryIssue:
+          type: ["string", "null"]
+          description: The secondary, more specific issue (e.g., 'Too salty' for 'Taste').
+        rootCause:
+          type: ["string", "null"]
+          description: The most specific diagnosis captured by the cascade. Normally mirrors secondaryIssue.
+        feedbackType:
+          type: ["string", "null"]
+          enum: [positive, neutral, negative, null]
+        category:
+          type: ["string", "null"]
+        attribute:
+          type: ["string", "null"]
+        specificDetail:
+          type: ["string", "null"]
+          maxLength: 1000
+        dish:
+          type: ["string", "null"]
+          maxLength: 200
+        # Specific follow-up answers
+        waitingTime:
+          type: ["string", "null"]
+          description: The approximate waiting time reported by the user.
+        # Final catch-all comment
+        finalComment:
+          type: ["string", "null"]
+          maxLength: 1000
+          description: Optional final open-ended comment from the user.
       required:
         - rating
         - painPoint
+        - location
     FeedbackReceipt:
       type: object
       properties:
@@ -108,4 +147,3 @@ components:
           type: string
       required:
         - error
-

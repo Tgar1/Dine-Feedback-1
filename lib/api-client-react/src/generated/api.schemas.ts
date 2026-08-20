@@ -10,9 +10,10 @@ export interface HealthStatus {
 }
 
 /**
- * The area that could be improved most
+ * The area that could be improved most, or 'none' for positive feedback.
+ * @nullable
  */
-export type FeedbackInputPainPoint = typeof FeedbackInputPainPoint[keyof typeof FeedbackInputPainPoint];
+export type FeedbackInputPainPoint = typeof FeedbackInputPainPoint[keyof typeof FeedbackInputPainPoint] | null;
 
 
 export const FeedbackInputPainPoint = {
@@ -20,8 +21,11 @@ export const FeedbackInputPainPoint = {
   service: 'service',
   waiting: 'waiting',
   cleanliness: 'cleanliness',
+  atmosphere: 'atmosphere',
   ambience: 'ambience',
   value: 'value',
+  delivery: 'delivery',
+  other: 'other',
   none: 'none',
 } as const;
 
@@ -32,20 +36,58 @@ export interface FeedbackInput {
      * @maximum 5
      */
   rating: number;
-  /** The area that could be improved most */
-  painPoint: FeedbackInputPainPoint;
   /**
-     * Optional short comment
-     * @maxLength 500
+     * The area that could be improved most, or 'none' for positive feedback.
      * @nullable
      */
-  comment?: string | null;
+  painPoint: FeedbackInputPainPoint;
   /**
      * Restaurant location from the QR code
      * @maxLength 80
      * @nullable
      */
-  location?: string | null;
+  location: string | null;
+  /**
+     * For good ratings, what the user enjoyed most.
+     * @nullable
+     */
+  enjoyedMost?: string | null;
+  /**
+     * For good ratings, what would make the next visit even better.
+     * @nullable
+     */
+  improvementSuggestion?: string | null;
+  /**
+     * The primary issue selected within a pain point category (e.g., 'Taste' for 'Food').
+     * @nullable
+     */
+  primaryIssue?: string | null;
+  /**
+     * The secondary, more specific issue (e.g., 'Too salty' for 'Taste').
+     * @nullable
+     */
+  secondaryIssue?: string | null;
+  /**
+   * The most specific diagnosis captured by the cascade. Normally mirrors secondaryIssue.
+   * @nullable
+   */
+  rootCause?: string | null;
+  feedbackType?: 'positive' | 'neutral' | 'negative' | null;
+  category?: string | null;
+  attribute?: string | null;
+  specificDetail?: string | null;
+  dish?: string | null;
+  /**
+     * The approximate waiting time reported by the user.
+     * @nullable
+     */
+  waitingTime?: string | null;
+  /**
+     * Optional final open-ended comment from the user.
+     * @maxLength 1000
+     * @nullable
+     */
+  finalComment?: string | null;
 }
 
 export interface FeedbackReceipt {
@@ -56,4 +98,3 @@ export interface FeedbackReceipt {
 export interface ErrorResponse {
   error: string;
 }
-

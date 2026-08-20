@@ -23,22 +23,31 @@ export const HealthCheckResponse = zod.object({
  */
 export const createFeedbackBodyRatingMax = 5;
 
-export const createFeedbackBodyCommentMax = 500;
-
 export const createFeedbackBodyLocationMax = 80;
+
+export const createFeedbackBodyFinalCommentMax = 1000;
 
 
 
 export const CreateFeedbackBody = zod.object({
   "rating": zod.number().min(1).max(createFeedbackBodyRatingMax).describe('Overall visit rating from 1 to 5'),
-  "painPoint": zod.enum(['food', 'service', 'waiting', 'cleanliness', 'ambience', 'value', 'none']).describe('The area that could be improved most'),
-  "comment": zod.string().max(createFeedbackBodyCommentMax).nullish().describe('Optional short comment'),
-  "location": zod.string().max(createFeedbackBodyLocationMax).nullish().describe('Restaurant location from the QR code')
+  "painPoint": zod.enum(['food', 'service', 'waiting', 'cleanliness', 'atmosphere', 'ambience', 'value', 'delivery', 'other', 'none']).nullable().describe('The area that could be improved most, or \'none\' for positive feedback.'),
+  "location": zod.string().max(createFeedbackBodyLocationMax).nullable().describe('Restaurant location from the QR code'),
+  "enjoyedMost": zod.string().nullish().describe('For good ratings, what the user enjoyed most.'),
+  "improvementSuggestion": zod.string().nullish().describe('For good ratings, what would make the next visit even better.'),
+  "primaryIssue": zod.string().nullish().describe('The primary issue selected within a pain point category (e.g., \'Taste\' for \'Food\').'),
+  "secondaryIssue": zod.string().nullish().describe('The secondary, more specific issue (e.g., \'Too salty\' for \'Taste\').'),
+  "rootCause": zod.string().nullish().describe('The most specific diagnosis captured by the cascade. Normally mirrors secondaryIssue.'),
+  "feedbackType": zod.enum(['positive', 'neutral', 'negative']).nullish(),
+  "category": zod.string().nullish(),
+  "attribute": zod.string().nullish(),
+  "specificDetail": zod.string().max(1000).nullish(),
+  "dish": zod.string().max(200).nullish(),
+  "waitingTime": zod.string().nullish().describe('The approximate waiting time reported by the user.'),
+  "finalComment": zod.string().max(createFeedbackBodyFinalCommentMax).nullish().describe('Optional final open-ended comment from the user.')
 })
 
 export const CreateFeedbackResponse = zod.object({
   "id": zod.string(),
   "message": zod.string()
 })
-
-

@@ -1,0 +1,46 @@
+[debug] [2026-08-18T15:56:33.274Z] ----------------------------------------------------------------------
+[debug] [2026-08-18T15:56:33.280Z] Command:       /usr/local/Cellar/node/26.7.0/bin/node /usr/local/bin/firebase projects:create dine-feedback-rodina
+[debug] [2026-08-18T15:56:33.281Z] CLI Version:   15.27.0
+[debug] [2026-08-18T15:56:33.281Z] Platform:      darwin
+[debug] [2026-08-18T15:56:33.281Z] Node Version:  v26.7.0
+[debug] [2026-08-18T15:56:33.281Z] Detected Agent: unknown
+[debug] [2026-08-18T15:56:33.282Z] Time:          Tue Aug 18 2026 16:56:33 GMT+0100 (West Africa Time)
+[debug] [2026-08-18T15:56:33.282Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-08-18T15:56:33.296Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-08-18T15:56:33.297Z] > authorizing via signed-in user (eterkula@gmail.com)
+[debug] [2026-08-18T15:56:52.847Z] Checked if tokens are valid: true, expires at: 1787071832840
+[debug] [2026-08-18T15:56:52.848Z] Checked if tokens are valid: true, expires at: 1787071832840
+[debug] [2026-08-18T15:56:52.850Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2026-08-18T15:56:52.850Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"dine-feedback-rodina","name":"dine-feedback-rodina"}
+[debug] [2026-08-18T15:56:54.311Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 200
+[debug] [2026-08-18T15:56:54.311Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"name":"operations/create_project.global.8316299322644493412"}
+[debug] [2026-08-18T15:56:54.313Z] Checked if tokens are valid: true, expires at: 1787071832840
+[debug] [2026-08-18T15:56:54.313Z] Checked if tokens are valid: true, expires at: 1787071832840
+[debug] [2026-08-18T15:56:54.314Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8316299322644493412 [none]
+[debug] [2026-08-18T15:56:55.141Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8316299322644493412 200
+[debug] [2026-08-18T15:56:55.142Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8316299322644493412 {"name":"operations/create_project.global.8316299322644493412"}
+[debug] [2026-08-18T15:56:55.644Z] [Project Creation Poller] Retrying task index 0
+[debug] [2026-08-18T15:56:55.644Z] Checked if tokens are valid: true, expires at: 1787071832840
+[debug] [2026-08-18T15:56:55.644Z] Checked if tokens are valid: true, expires at: 1787071832840
+[debug] [2026-08-18T15:56:55.645Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8316299322644493412 [none]
+[debug] [2026-08-18T15:56:56.016Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8316299322644493412 200
+[debug] [2026-08-18T15:56:56.016Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8316299322644493412 {"name":"operations/create_project.global.8316299322644493412"}
+[debug] [2026-08-18T15:56:57.018Z] [Project Creation Poller] Retrying task index 0
+[debug] [2026-08-18T15:56:57.019Z] Checked if tokens are valid: true, expires at: 1787071832840
+[debug] [2026-08-18T15:56:57.019Z] Checked if tokens are valid: true, expires at: 1787071832840
+[debug] [2026-08-18T15:56:57.019Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8316299322644493412 [none]
+[debug] [2026-08-18T15:56:57.341Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8316299322644493412 200
+[debug] [2026-08-18T15:56:57.341Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.8316299322644493412 {"name":"operations/create_project.global.8316299322644493412","metadata":{"@type":"type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus","gettable":true,"ready":true},"done":true,"response":{"@type":"type.googleapis.com/google.cloudresourcemanager.v1.Project","projectNumber":"404225337348","projectId":"dine-feedback-rodina","lifecycleState":"ACTIVE","name":"dine-feedback-rodina","createTime":"2026-08-18T15:56:54.469Z"}}
+[debug] [2026-08-18T15:56:57.345Z] Checked if tokens are valid: true, expires at: 1787071832840
+[debug] [2026-08-18T15:56:57.345Z] Checked if tokens are valid: true, expires at: 1787071832840
+[debug] [2026-08-18T15:56:57.347Z] >>> [apiv2][query] POST https://firebase.googleapis.com/v1beta1/projects/dine-feedback-rodina:addFirebase [none]
+[debug] [2026-08-18T15:56:58.905Z] <<< [apiv2][status] POST https://firebase.googleapis.com/v1beta1/projects/dine-feedback-rodina:addFirebase 403
+[debug] [2026-08-18T15:56:58.905Z] <<< [apiv2][body] POST https://firebase.googleapis.com/v1beta1/projects/dine-feedback-rodina:addFirebase {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-08-18T15:56:58.907Z] Request to https://firebase.googleapis.com/v1beta1/projects/dine-feedback-rodina:addFirebase had HTTP Error: 403, The caller does not have permission
+[debug] [2026-08-18T15:56:58.910Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects/dine-feedback-rodina:addFirebase had HTTP Error: 403, The caller does not have permission
+    at responseToError (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:53:12)
+    at RetryOperation._fn (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:415:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[error] 
+[error] Error: Failed to add Firebase to Google Cloud Platform project. See firebase-debug.log for more info.

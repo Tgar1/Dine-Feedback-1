@@ -7,9 +7,10 @@
  */
 
 /**
- * The area that could be improved most
+ * The area that could be improved most, or 'none' for positive feedback.
+ * @nullable
  */
-export type FeedbackInputPainPoint = typeof FeedbackInputPainPoint[keyof typeof FeedbackInputPainPoint];
+export type FeedbackInputPainPoint = typeof FeedbackInputPainPoint[keyof typeof FeedbackInputPainPoint] | null;
 
 
 export const FeedbackInputPainPoint = {
@@ -17,7 +18,10 @@ export const FeedbackInputPainPoint = {
   service: 'service',
   waiting: 'waiting',
   cleanliness: 'cleanliness',
+  atmosphere: 'atmosphere',
   ambience: 'ambience',
   value: 'value',
+  delivery: 'delivery',
+  other: 'other',
   none: 'none',
 } as const;

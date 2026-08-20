@@ -10,7 +10,7 @@ function BrandMark() {
       <span className="grid size-9 place-items-center rounded-full bg-[#CCFF00] text-[#1B4D3E] shadow-[0_5px_14px_rgba(27,77,62,.12)]">
         <span className="h-4 w-4 rounded-full border-[1.5px] border-[#1B4D3E] border-dashed" />
       </span>
-      <span className="font-serif text-[1.15rem] font-semibold tracking-[-.03em] text-[#1B4D3E]">Rodina</span>
+      <span className="font-serif text-[1.15rem] font-semibold tracking-[-.03em] text-[#1B4D3E]">ReRu</span>
     </div>
   );
 }
