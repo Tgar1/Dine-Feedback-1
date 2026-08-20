@@ -7,7 +7,7 @@ COPY package.json ./
 COPY artifacts/api-server/package.json ./artifacts/api-server/
 
 RUN npm install -g pnpm
-RUN pnpm install --no-frozen-lockfile
+RUN pnpm install --no-frozen-lockfile --prefer-offline
 
 COPY . .
 
