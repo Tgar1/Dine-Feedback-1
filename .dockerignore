@@ -1,0 +1,97 @@
+# flyctl launch added from .gitignore
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# compiled output
+**/dist
+**/tmp
+**/out-tsc
+**/*.tsbuildinfo
+**/.expo
+**/.expo-shared
+
+# dependencies
+**/node_modules
+
+# IDEs and editors
+.idea
+**/.project
+**/.classpath
+**/.c9
+**/*.launch
+**/.settings
+**/*.sublime-workspace
+
+# IDE - VSCode
+**/.vscode/*
+!**/.vscode/settings.json
+!**/.vscode/tasks.json
+!**/.vscode/launch.json
+!**/.vscode/extensions.json
+
+# misc
+.sass-cache
+connect.lock
+coverage
+libpeerconnection.log
+**/npm-debug.log
+**/yarn-error.log
+**/testem.log
+typings
+
+# System Files
+**/.DS_Store
+**/Thumbs.db
+
+**/.cursor/rules/nx-rules.mdc
+**/.github/instructions/nx.instructions.md
+
+# Replit
+**/.cache
+**/.local
+
+# flyctl launch added from .local/skills/artifacts/artifacts/expo/files/.gitignore
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+.local/skills/artifacts/artifacts/expo/files/**/node_modules
+
+# Expo
+.local/skills/artifacts/artifacts/expo/files/**/.expo
+.local/skills/artifacts/artifacts/expo/files/**/dist
+.local/skills/artifacts/artifacts/expo/files/**/web-build
+.local/skills/artifacts/artifacts/expo/files/**/expo-env.d.ts
+
+# Native
+.local/skills/artifacts/artifacts/expo/files/**/ios
+.local/skills/artifacts/artifacts/expo/files/**/android
+.local/skills/artifacts/artifacts/expo/files/**/*.orig.*
+.local/skills/artifacts/artifacts/expo/files/**/*.jks
+.local/skills/artifacts/artifacts/expo/files/**/*.p8
+.local/skills/artifacts/artifacts/expo/files/**/*.p12
+.local/skills/artifacts/artifacts/expo/files/**/*.key
+.local/skills/artifacts/artifacts/expo/files/**/*.mobileprovision
+
+# Metro
+.local/skills/artifacts/artifacts/expo/files/**/.metro-health-check*
+
+# debug
+.local/skills/artifacts/artifacts/expo/files/**/npm-debug.*
+.local/skills/artifacts/artifacts/expo/files/**/yarn-debug.*
+.local/skills/artifacts/artifacts/expo/files/**/yarn-error.*
+
+# macOS
+.local/skills/artifacts/artifacts/expo/files/**/.DS_Store
+.local/skills/artifacts/artifacts/expo/files/**/*.pem
+
+# local env files
+.local/skills/artifacts/artifacts/expo/files/**/.env*.local
+
+# typescript
+.local/skills/artifacts/artifacts/expo/files/**/*.tsbuildinfo
+.local/skills/artifacts/artifacts/expo/files/**/.vercel
+
+.local/skills/artifacts/artifacts/expo/files/**/.env
+
+# flyctl launch added from .local/skills/artifacts/artifacts/slides/files/src/data/.gitignore
+.local/skills/artifacts/artifacts/slides/files/src/data/**/.slide-thumbnails
+fly.toml

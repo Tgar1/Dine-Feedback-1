@@ -1,7 +1,9 @@
 import { Router, type IRouter } from "express";
-import { CreateFeedbackBody, CreateFeedbackResponse } from "@workspace/api-zod";
 import { queueFeedbackAnalysis } from "../ai/analysis-worker";
 import { supabase } from "../lib/supabase";
+
+type CreateFeedbackBody = any;
+type CreateFeedbackResponse = any;
 
 const router: IRouter = Router();
 
